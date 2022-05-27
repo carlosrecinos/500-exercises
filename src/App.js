@@ -1,23 +1,16 @@
-import logo from './logo.svg';
 import './App.css';
+import FindPair from './exercises/1';
+
+const Title = () => (
+  <p>500 exercises</p>
+)
 
 function App() {
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Title />
+      <FindPair />
     </div>
   );
 }
