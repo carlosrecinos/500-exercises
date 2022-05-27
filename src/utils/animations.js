@@ -2,21 +2,20 @@ import Two from 'two.js';
 import * as TWEEN from '@tweenjs/tween.js';
 import { SQUARE_SIZE } from './constants';
 
-const ANIMATION_DURATION = 500;
+const ANIMATION_DURATION = 50;
 const ANIMATION_DELAY = 0;
 
 export const takeOut = (boxes = [], i) => {
   return new Promise((resolve, reject) => {
     const box = boxes[i]
-    const {y} = box.position
+    box.fill = "#6e3028";
+    const { y } = box.position
     const target = { x: box.position.x, y: box.position.y + SQUARE_SIZE + 3 }
-    console.log(box.position, target)
-        const takeOut = new TWEEN.Tween(box).to(target, ANIMATION_DURATION).delay(ANIMATION_DELAY)
+    const takeOut = new TWEEN.Tween(box).to(target, ANIMATION_DURATION).delay(ANIMATION_DELAY)
       .onUpdate(function (box, elapsed) {
         box.position.y = y + (TWEEN.Easing.Linear.None(elapsed) * 100);
       })
       .onComplete(function (position) {
-        position.fill = "#28666E";
         resolve();
       })
     takeOut.start();
@@ -26,13 +25,14 @@ export const takeOut = (boxes = [], i) => {
 export const putIn = (boxes = [], i) => {
   return new Promise((resolve, reject) => {
     const box = boxes[i]
-    const {y} = box.position
+    const { y } = box.position
     const target = { x: box.position.x, y: box.position.y - (SQUARE_SIZE + 3) }
     const putIn = new TWEEN.Tween(box).to(target, ANIMATION_DURATION).delay(ANIMATION_DELAY)
       .onUpdate(function (box, elapsed) {
         box.position.y = y - (TWEEN.Easing.Linear.None(elapsed) * 100);
       })
       .onComplete(function (box) {
+        box.fill = "#28666E";
         resolve();
       })
     putIn.start();
@@ -50,22 +50,22 @@ export const traverse = (boxes = [], src, dst) => new Promise((resolve, reject) 
   const target = { x: box.position.x + SQUARE_SIZE * multiplier, y: box.position.y }
   const move1 = new TWEEN.Tween(box).to(target, ANIMATION_DURATION).delay(ANIMATION_DELAY)
     .onUpdate(function (box, elapsed) {
-        box.position.x = x + (multiplier * (TWEEN.Easing.Linear.None(elapsed) * 100));
+      box.position.x = x + (multiplier * (TWEEN.Easing.Linear.None(elapsed) * 100));
     })
     .onComplete((box) => {
       boxes[dst] = boxes[src];
     })
-  
+
   const box2 = boxes[dst]
+  const x2 = box2.position.x
   const multiplier2 = src - dst;
   const target2 = { x: box2.position.x + SQUARE_SIZE * multiplier2, y: box2.position.y }
   const move2 = new TWEEN.Tween(box2).to(target2, ANIMATION_DURATION).delay(ANIMATION_DELAY + 10)
     .onUpdate(function (box, elapsed) {
-        box.position.x = x - (multiplier * (TWEEN.Easing.Linear.None(elapsed) * 100));
+      box.position.x = x2 + (multiplier2 * (TWEEN.Easing.Linear.None(elapsed) * 100));
     })
     .onComplete((box) => {
       boxes[src] = aux;
-      console.log(boxes.map(e => e.children[1].value))
       resolve(boxes)
     })
 
@@ -76,10 +76,14 @@ export const traverse = (boxes = [], src, dst) => new Promise((resolve, reject) 
 export const accessValue = async (boxes = [], i = 0) => {
   return new Promise((resolve, reject) => {
     const box = boxes[i]
-    const changeColor = new TWEEN.Tween(box).duration(0).delay(ANIMATION_DELAY)
+    const changeColor = new TWEEN.Tween(box).duration(ANIMATION_DURATION).delay(ANIMATION_DELAY)
+      .onUpdate(() => {
+        box.fill = "#6e3028";
+      })
       .onComplete(async (box) => {
         box.fill = "#28666E";
-        resolve();
+        console.log(box.children[1].value)
+        resolve(box.children[1].value);
       })
     changeColor.start();
   })
@@ -88,9 +92,11 @@ export const accessValue = async (boxes = [], i = 0) => {
 export const readValue = async (boxes = [], i = 0) => {
   return new Promise((resolve, reject) => {
     const box = boxes[i]
-    const changeColor = new TWEEN.Tween(box).duration(0).delay(ANIMATION_DELAY)
+    const changeColor = new TWEEN.Tween(box).duration(ANIMATION_DURATION).delay(ANIMATION_DELAY)
+      .onUpdate(() => {
+        box.fill = "#6e3028";
+      })
       .onComplete(async (box) => {
-        box.fill = "#28666E";
         await takeOut(boxes, i)
         resolve();
       })

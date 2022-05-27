@@ -1,14 +1,17 @@
 import * as TWEEN from '@tweenjs/tween.js';
 import { useEffect, useRef, useState } from 'react';
 import Two from 'two.js';
-import { accessValue, createSlot, putIn, readValue, switchPositions, takeOut, traverse,  } from '../../utils/animations';
+import { accessValue, createSlot, switchPositions } from '../../utils/animations';
+import { createArray } from '../../utils/';
 
-export const Animation = () => {
+export const BubbleSort = () => {
   const ref = useRef(null);
-  const [input, setInput] = useState([2,3,1]);
+  const [input, setInput] = useState(createArray(5, -100000, 100000));
   useEffect(() => {
     var two = new Two({
       type: Two.Types.svg,
+      width: ref.current.offsetWidth,
+      height: 210,
     }).appendTo(ref.current);
 
     var slotsGroup = new Two.Group();
@@ -24,15 +27,15 @@ export const Animation = () => {
     }).play();
 
     const bubbleSort = async (arr, n) => {
-      console.log("Bubble sorting =>: ", arr)
       var i, j, temp;
       var swapped;
       for (i = 0; i < n - 1; i++) {
         swapped = false;
         for (j = 0; j < n - i - 1; j++) {
-          if (arr[j] > arr[j + 1]) {
+          accessValue(slots, j)
+          await accessValue(slots, j + 1)
 
-            
+          if (arr[j] > arr[j + 1]) {
             temp = arr[j];
             arr[j] = arr[j + 1];
             arr[j + 1] = temp;
@@ -49,15 +52,16 @@ export const Animation = () => {
     }
 
     const startAlgorithm = async () => {
-      // await bubbleSort(input, input.length);
-      slots = await switchPositions(slots, 0, 1);
-      slots = await switchPositions(slots, 1, 2);
-      slots = await switchPositions(slots, 2, 0);
+      await bubbleSort(input, input.length);
     }
 
     startAlgorithm();
-    console.log('i fire once');
   }, [])
-  console.log("Input: ", input);
-  return <div ref={ref} />
+
+  return <div>
+    <h1>Bubble sort</h1>
+    <h3>Given an array sort the elements.</h3>
+    <h3>[{input.map((e) => `${e}, `)}]</h3>
+    <div style={{ width: '100%' }} ref={ref} />
+  </div>
 }
