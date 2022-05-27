@@ -1,8 +1,7 @@
 import Two from 'two.js';
 import * as TWEEN from '@tweenjs/tween.js';
 import { SQUARE_SIZE } from './constants';
-
-const ANIMATION_DURATION = 50;
+const ANIMATION_DURATION = 100;
 const ANIMATION_DELAY = 0;
 
 export const takeOut = (boxes = [], i) => {
@@ -41,7 +40,6 @@ export const putIn = (boxes = [], i) => {
 
 // Requires items to be already taken out for better
 export const traverse = (boxes = [], src, dst) => new Promise((resolve, reject) => {
-  console.log(src, " -> ", dst)
   const aux = boxes[dst];
   const box = boxes[src]
   const { x } = box.position
@@ -76,15 +74,15 @@ export const traverse = (boxes = [], src, dst) => new Promise((resolve, reject) 
 export const accessValue = async (boxes = [], i = 0) => {
   return new Promise((resolve, reject) => {
     const box = boxes[i]
+    if (!box) {
+      resolve();
+    }
+    box.fill = "#6e3028";
     const changeColor = new TWEEN.Tween(box).duration(ANIMATION_DURATION).delay(ANIMATION_DELAY)
-      .onUpdate(() => {
-        box.fill = "#6e3028";
-      })
-      .onComplete(async (box) => {
-        box.fill = "#28666E";
-        console.log(box.children[1].value)
-        resolve(box.children[1].value);
-      })
+    .onComplete(async (box) => {
+      box.fill = "#28666E";
+      resolve(box.children[1].value);
+    })
     changeColor.start();
   })
 }
@@ -99,6 +97,27 @@ export const readValue = async (boxes = [], i = 0) => {
       .onComplete(async (box) => {
         await takeOut(boxes, i)
         resolve();
+      })
+    changeColor.start();
+  })
+}
+
+export const updateMapSlot = async (boxes = new Map(), key = 1, value) => {
+  return new Promise(async (resolve, reject) => {
+    const exists = boxes.has(key);
+    const box = exists ? boxes.get(key) : boxes.get(0)
+    const valueText = box.children[1]
+    const keyText = box.children[3]
+    valueText.value = value
+    keyText.value = key
+    box.fill = "#6e3028";
+    
+    const changeColor = new TWEEN.Tween(box).duration(ANIMATION_DURATION).delay(ANIMATION_DELAY)
+      .onComplete(async (box) => {
+        if (!exists) {
+          boxes.set(key, box);
+        }
+        resolve(boxes);
       })
     changeColor.start();
   })
@@ -122,21 +141,48 @@ export const switchPositions = async (boxes, from, to) => {
 
 export const createSlot = (e, i) => {
   const padding = (SQUARE_SIZE / 2) + 3
+  const x = (SQUARE_SIZE * i) + padding
   const y = padding
-  const x = i * SQUARE_SIZE + padding;
-  const relativeX = (SQUARE_SIZE * i) + (SQUARE_SIZE / 2) + 3
 
   var box = new Two.Rectangle(x, y, SQUARE_SIZE, SQUARE_SIZE);
   box.fill = '#28666E';
   box.stroke = '#033F63';
   box.linewidth = 5;
 
-  const valueText = new Two.Text(e, relativeX, SQUARE_SIZE / 2, 'normal');
-  valueText.fill = '#FFFFFF';
-  valueText.stroke = '#FFFFFF';
+  const valueText = new Two.Text(e, x, padding, 'normal');
+  valueText.fill = '#ffffff';
+  valueText.stroke = '#ffffff';
   valueText.size = 18
 
   const boxGroup = new Two.Group(box, valueText);
-  boxGroup.id = "box-" + e;
+  return boxGroup;
+}
+
+export const createKeyValueSlot = (k, v, i) => {
+  const padding = (SQUARE_SIZE / 2) + 3
+  const x = (SQUARE_SIZE * i) + padding
+  const y = padding
+
+  var box = new Two.Rectangle(x, y, SQUARE_SIZE, SQUARE_SIZE);
+  box.fill = '#28666E';
+  box.stroke = '#033F63';
+  box.linewidth = 5;
+
+  const valueText = new Two.Text(v, x, padding - 10, 'normal');
+  valueText.fill = '#ffffff';
+  valueText.stroke = '#ffffff';
+  valueText.size = 18
+
+  var separator = new Two.Rectangle(x, padding + 26, SQUARE_SIZE, 1);
+  separator.fill = "#033F63"
+  separator.stroke = "#033F63"
+  separator.linewidth = 5
+
+  const keyText = new Two.Text(k, x, padding + 40, 'normal');
+  keyText.bor = '#033F63';
+  keyText.stroke = '#eeeeee';
+  keyText.size = 12
+
+  const boxGroup = new Two.Group(box, valueText, separator, keyText);
   return boxGroup;
 }

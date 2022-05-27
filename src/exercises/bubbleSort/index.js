@@ -6,7 +6,7 @@ import { createArray } from '../../utils/';
 
 export const BubbleSort = () => {
   const ref = useRef(null);
-  const [input, setInput] = useState(createArray(5, -100000, 100000));
+  const [input, setInput] = useState(createArray(8, -1000, 1000));
   useEffect(() => {
     var two = new Two({
       type: Two.Types.svg,

@@ -4,16 +4,11 @@ import { useEffect, useRef } from 'react';
 import Two from 'two.js';
 import * as TWEEN from '@tweenjs/tween.js';
 import { createArray, randomNumberBetween } from '../../utils'
-import { accessValue, createSlot, switchPositions } from '../../utils/animations';
+import { accessValue, createSlot, switchPositions, takeOut } from '../../utils/animations';
 
-let input = createArray(5, 0, 10);
-let sum = randomNumberBetween(1, 10);
+let input = createArray(8, 1, 5);
+let sum = randomNumberBetween(5, 10);
 
-if (!pair) {
-  console.log("No pair found");
-} else {
-  console.log("Pair found: ", pair);
-}
 const FindPair = () => {
   const ref = useRef(null);
   useEffect(() => {
@@ -35,13 +30,24 @@ const FindPair = () => {
       TWEEN.update();
     }).play();
 
-    const findPair = () => {
+    const findPair = async () => {
+      let pair;
       for (let i = 1; i < input.length; i++) {
         let prev = input[i - 1];
+        accessValue(slots, i - 1)
+        await accessValue(slots, i)
         if (prev + input[i] === sum) {
-          return [prev, input[i]];
+          pair = [prev, input[i]];
+          takeOut(slots, i - 1)
+          await takeOut(slots, i)
+          break
         }
         prev = input[i];
+      }
+      if (!pair) {
+        console.log("No pair found");
+      } else {
+        console.log("Pair found: ", pair);
       }
     }
 
@@ -56,6 +62,7 @@ const FindPair = () => {
       <h1>Find pair within array</h1>
       <h3>Find a pair with the given sum in an array</h3>
       <h3>Given an unsorted integer array, find a pair with the given sum in it.</h3>
+      <h3>[{input.map((e) => `${e}, `)}], SUM = {sum}</h3>
       <div style={{ width: '100%' }} ref={ref} />
     </div>
   )
