@@ -19,3 +19,7 @@ export const arraymove = (arr, fromIndex, toIndex) => {
   copy.splice(toIndex, 0, element);
   return copy;
 }
+
+export const sleep = async (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

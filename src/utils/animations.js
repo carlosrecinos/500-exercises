@@ -79,10 +79,10 @@ export const accessValue = async (boxes = [], i = 0) => {
     }
     box.fill = "#6e3028";
     const changeColor = new TWEEN.Tween(box).duration(ANIMATION_DURATION).delay(ANIMATION_DELAY)
-    .onComplete(async (box) => {
-      box.fill = "#28666E";
-      resolve(box.children[1].value);
-    })
+      .onComplete(async (box) => {
+        box.fill = "#28666E";
+        resolve(box.children[1].value);
+      })
     changeColor.start();
   })
 }
@@ -104,19 +104,18 @@ export const readValue = async (boxes = [], i = 0) => {
 
 export const updateMapSlot = async (boxes = new Map(), key = 1, value) => {
   return new Promise(async (resolve, reject) => {
-    const exists = boxes.has(key);
-    const box = exists ? boxes.get(key) : boxes.get(0)
+    if (!boxes.has(key)) {
+      boxes.set(key, value)
+    }
+    const box = boxes.get(key)
     const valueText = box.children[1]
     const keyText = box.children[3]
     valueText.value = value
     keyText.value = key
     box.fill = "#6e3028";
-    
+
     const changeColor = new TWEEN.Tween(box).duration(ANIMATION_DURATION).delay(ANIMATION_DELAY)
       .onComplete(async (box) => {
-        if (!exists) {
-          boxes.set(key, box);
-        }
         resolve(boxes);
       })
     changeColor.start();
