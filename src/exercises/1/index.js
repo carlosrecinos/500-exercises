@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import Two from 'two.js';
 import * as TWEEN from '@tweenjs/tween.js';
 import { createArray, randomNumberBetween } from '../../utils'
-import { accessValue, createSlot, switchPositions, takeOut } from '../../utils/animations';
+import { accessValue, createSlot, takeOut } from '../../utils/animations';
 
 let input = createArray(8, 1, 5);
 let sum = randomNumberBetween(5, 10);
@@ -46,8 +46,6 @@ const FindPair = () => {
       }
       if (!pair) {
         console.log("No pair found");
-      } else {
-        console.log("Pair found: ", pair);
       }
     }
 

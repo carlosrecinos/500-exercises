@@ -71,7 +71,7 @@ export const traverse = (boxes = [], src, dst) => new Promise((resolve, reject) 
   move2.start()
 })
 
-export const accessValue = async (boxes = [], i = 0) => {
+export const accessValue = async (boxes = [], i = 0, options = {}) => {
   return new Promise((resolve, reject) => {
     const box = boxes[i]
     if (!box) {
@@ -124,8 +124,6 @@ export const updateMapSlot = async (boxes = new Map(), key = 1, value) => {
 
 export const switchPositions = async (boxes, from, to) => {
   return new Promise(async (resolve, reject) => {
-
-
     readValue(boxes, from)
     await readValue(boxes, to)
 

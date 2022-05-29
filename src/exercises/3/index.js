@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import Two from 'two.js';
 import * as TWEEN from '@tweenjs/tween.js';
-import { createArray, randomNumberBetween, sleep } from '../../utils'
-import { accessValue, createKeyValueSlot, createSlot, putIn, switchPositions, takeOut, updateMapSlot } from '../../utils/animations';
+import { createArray, sleep } from '../../utils'
+import { accessValue, createSlot } from '../../utils/animations';
 
 const input = createArray(8, 0, 1);
 
@@ -61,7 +61,6 @@ export const SortBinaryArray = () => {
         newArray[i] = 0;
       }
 
-      console.log("Input", input)
       return newArray;
     }
 

@@ -8,10 +8,10 @@ import { useEffect, useRef } from 'react';
 import Two from 'two.js';
 import * as TWEEN from '@tweenjs/tween.js';
 import { ExerciseWrapper } from '../../components/ExerciseWrapper'
-import { accessValue, createKeyValueSlot, createSlot, putIn, readValue, switchPositions, takeOut, updateMapSlot } from '../../utils/animations';
-import { sleep } from '../../utils';
+import { accessValue, createKeyValueSlot, createSlot, takeOut, updateMapSlot } from '../../utils/animations';
+import { createArray } from '../../utils';
 
-const input = [1, 2, 3, 4, 10, 19, 29, 3];
+let input = createArray(8, 0, 10);
 
 export const FindDuplicatedElement = () => {
   const inputRef = useRef(null);

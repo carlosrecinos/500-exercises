@@ -7,10 +7,10 @@ import { useEffect, useRef } from 'react';
 import Two from 'two.js';
 import * as TWEEN from '@tweenjs/tween.js';
 import { ExerciseWrapper } from '../../components/ExerciseWrapper'
-import { accessValue, createKeyValueSlot, createSlot, putIn, readValue, switchPositions, takeOut, updateMapSlot } from '../../utils/animations';
-import { sleep } from '../../utils';
+import { createSlot, takeOut } from '../../utils/animations';
+import { createArray } from '../../utils';
 
-const input = [2, 0, 2, 1, 4, 3, 1, 0];
+let input = createArray(8, 0, 10);
 
 export const LargestSubArrayContainingConsecutiveNumbers = () => {
   const inputRef = useRef(null);
@@ -77,7 +77,6 @@ export const LargestSubArrayContainingConsecutiveNumbers = () => {
 
     const startAlgorithm = async () => {
       const { start, end } = await findMaxSubArray(input);
-      console.log("Found max subarray", { start, end })
 
       for (let i = start; i <= end; i++) {
         if (i === end) {

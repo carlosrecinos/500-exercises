@@ -1,15 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Two from 'two.js';
 import * as TWEEN from '@tweenjs/tween.js';
 import { createArray, sleep } from '../../utils'
 import { accessValue, createKeyValueSlot, createSlot, putIn, takeOut, updateMapSlot } from '../../utils/animations';
+import { ExerciseWrapper } from '../../components/ExerciseWrapper';
 
-let input = createArray(8, -5, 5);
+let input = createArray(8, 0, 1);
 
-export const Find0SumSubarray = () => {
+export const FindLargestEqual0_1Subarry = () => {
   const inputRef = useRef(null);
   const mapRef = useRef(null);
-  const [sum, setSum] = useState(0)
   useEffect(() => {
 
     var two = new Two({
@@ -29,8 +29,13 @@ export const Find0SumSubarray = () => {
 
     var mapSlots = new Map();
     var mapGroup = new Two.Group();
-
-    input.forEach((e, i) => {
+    const replaced0Array = input.map((e) => {
+      if (e === 0) {
+        return -1
+      }
+      return e
+    })
+    replaced0Array.forEach((e, i) => {
       const slotGroup = createSlot(e, i)
       slots.push(slotGroup)
       slotsGroup.add(slotGroup);
@@ -65,9 +70,8 @@ export const Find0SumSubarray = () => {
         await addMapValue(map, 0, [-1])
         let sum = 0;
         const subArrays = []
-        for (let i = 0; i < input.length; i++) {
-          sum += input[i];
-          setSum(sum + input[i])
+        for (let i = 0; i < replaced0Array.length; i++) {
+          sum += replaced0Array[i];
           await accessValue(slots, i)
           if (map.has(sum)) {
             const list = map.get(sum);
@@ -84,7 +88,9 @@ export const Find0SumSubarray = () => {
     };
 
     const startAlgorithm = async () => {
-      const subArrays = await findSubarraysWithZeroSum(input, input.length);
+      
+      const subArrays = await findSubarraysWithZeroSum(replaced0Array, replaced0Array.length);
+      console.log("Found subarrays equal to : ", subArrays);
       for (let i = 0; i < subArrays.length; i++) {
         const subArray = subArrays[i];
         for (let i = subArray.start; i <= subArray.end; i++) {
@@ -112,12 +118,13 @@ export const Find0SumSubarray = () => {
     startAlgorithm();
   }, [])
   return (
-    <div>
-      <h1>Print all subarrays with 0 sum</h1>
-      <h3>Given an integer array, print all subarrays with zero-sum.</h3>
-      <h3>[{input.map((e) => `${e}, `)}] - Current elements SUM = [{sum}]</h3>
+    <ExerciseWrapper
+      input={`[${input.map((e) => e)}]`}
+      title="Find the largest subarray having an equal number of 0’s and 1’s"
+      message="Given a binary array containing 0’s and 1’s, find the largest subarray with equal numbers of 0’s and 1’s.">
       <div style={{ width: '100%' }} ref={inputRef} />
       <div style={{ width: '100%' }} ref={mapRef} />
-    </div>
+    </ExerciseWrapper>
   )
+
 }
