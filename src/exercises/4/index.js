@@ -11,7 +11,7 @@ import { ExerciseWrapper } from '../../components/ExerciseWrapper'
 import { accessValue, createKeyValueSlot, createSlot, putIn, readValue, switchPositions, takeOut, updateMapSlot } from '../../utils/animations';
 import { sleep } from '../../utils';
 
-const input = [1, 2, 3, 4, 10,19,29,3];
+const input = [1, 2, 3, 4, 10, 19, 29, 3];
 
 export const FindDuplicatedElement = () => {
   const inputRef = useRef(null);
@@ -63,7 +63,7 @@ export const FindDuplicatedElement = () => {
       map.set(key, value)
       await updateMapSlot(mapSlots, key, value);
     }
-    
+
     const findDuplicatedElement = async (elements) => {
       const map = new Map();
       for (let i = 0; i < elements.length; i++) {
@@ -88,18 +88,17 @@ export const FindDuplicatedElement = () => {
       for (let i = 0; i < subArrays.length; i++) {
         const element = subArrays[i];
         addOutputValue(i, element)
-        await sleep(50)
       }
     }
     startAlgorithm();
   }, [])
   return (
-    <ExerciseWrapper 
-        input={`[${input.map((e) => e)}]`}
-        title="Find the duplicate element in a limited range array" 
-        message="Given a binary array, sort it in linear time and constant space. The output should print all zeroes, followed by all ones.">
-        <div style={{ width: '100%' }} ref={inputRef} />
-        <div style={{ width: '100%' }} ref={outputRef} />
-      </ExerciseWrapper>
+    <ExerciseWrapper
+      input={`[${input.map((e) => e)}]`}
+      title="Find the duplicate element in a limited range array"
+      message="Given a binary array, sort it in linear time and constant space. The output should print all zeroes, followed by all ones.">
+      <div style={{ width: '100%' }} ref={inputRef} />
+      <div style={{ width: '100%' }} ref={outputRef} />
+    </ExerciseWrapper>
   )
 }
