@@ -7,6 +7,7 @@ import { FindDuplicatedElement } from './exercises/4';
 import { LargestSubArrayContainingConsecutiveNumbers } from './exercises/5';
 import { FindLargestEqual0_1Subarry } from './exercises/6';
 import { DutchNationalFlag } from './exercises/7';
+import { InPlaceMergeArrays } from './exercises/8';
 import { BubbleSort } from './exercises/bubbleSort';
 
 const Title = () => (
@@ -18,6 +19,7 @@ function App() {
   return (
     <div className="App">
       <Title />
+      {/* <InPlaceMergeArrays /> */}
       <DutchNationalFlag />
       <FindLargestEqual0_1Subarry />
       <LargestSubArrayContainingConsecutiveNumbers />

@@ -1,8 +1,3 @@
-/*
-Input:  { 2, 0, 2, 1, 4, 3, 1, 0 }
-Output: The largest subarray is { 0, 2, 1, 4, 3 }
-*/
-
 import { useEffect, useRef } from 'react';
 import Two from 'two.js';
 import * as TWEEN from '@tweenjs/tween.js';
@@ -12,7 +7,7 @@ import { createArray } from '../../utils'
 
 let input = createArray(8, 0, 2);
 
-export const DutchNationalFlag = () => {
+export const InPlaceMergeArrays = () => {
   const inputRef = useRef(null);
   useEffect(() => {
     var two = new Two({
@@ -95,8 +90,8 @@ export const DutchNationalFlag = () => {
   return (
     <ExerciseWrapper
       input={`[${input.map((e) => e)}]`}
-      title="Sort an array of 0’s, 1’s, and 2’s (Dutch National Flag Problem)"
-      message="Given an array containing only 0’s, 1’s, and 2’s, sort it in linear time and using constant space.">
+      title="In-place merge two sorted arrays"
+      message="Given two sorted arrays, X[] and Y[] of size m and n each, merge elements of X[] with elements of array Y[] by maintaining the sorted order, i.e., fill X[] with the first m smallest elements and fill Y[] with remaining elements.">
       <div style={{ width: '100%' }} ref={inputRef} />
     </ExerciseWrapper>
   )
